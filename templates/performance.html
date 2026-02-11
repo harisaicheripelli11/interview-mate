@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Performance | Interview Mate</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='performance.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="performance-wrapper">
+
+  <div class="performance-card">
+
+    <!-- HEADER -->
+    <div class="performance-header">
+      <div class="icon">📈</div>
+      <div>
+        <h1>Performance Overview</h1>
+        <p>Your interview growth & improvement insights</p>
+      </div>
+    </div>
+
+    <!-- KPI -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <span>Total Interviews</span>
+        <h2>{{ total_interviews }}</h2>
+      </div>
+
+      <div class="kpi-card">
+        <span>Avg Confidence</span>
+        <h2>{{ avg_confidence }}/10</h2>
+      </div>
+
+      <div class="kpi-card">
+        <span>Avg Clarity</span>
+        <h2>{{ avg_clarity }}/10</h2>
+      </div>
+
+      <div class="kpi-card ">
+        <span>Overall Score</span>
+        <h2>{{ overall_score }}%</h2>
+      </div>
+    </div>
+
+    <!-- GRAPH -->
+    <div class="graph-section">
+      <h3>📊 Growth Trend</h3>
+      <div class="graph-box">
+        <canvas id="growthChart"></canvas>
+      </div>
+    </div>
+
+    <!-- FEEDBACK -->
+    <div class="feedback-grid">
+
+      <!-- STRENGTHS -->
+      <div class="feedback-card success">
+        <h3>💪 Strengths</h3>
+        <ul>
+          {% for s in strengths %}
+            <li>{{ s }}</li>
+          {% endfor %}
+          {% if strengths|length < 3 %}
+            <li>Clear and structured responses</li>
+            <li>Good understanding of core concepts</li>
+            <li>Improved clarity over recent interviews</li>
+          {% endif %}
+        </ul>
+      </div>
+
+      <!-- IMPROVEMENTS -->
+      <div class="feedback-card warning">
+        <h3>⚠ Areas for Improvement</h3>
+        <ul>
+          {% for i in improvements %}
+            <li>{{ i }}</li>
+          {% endfor %}
+          {% if improvements|length < 3 %}
+            <li>Needs more confident explanations</li>
+            <li>Add more real-world examples</li>
+            <li>Explain answers with better structure</li>
+          {% endif %}
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- ACTION PLAN -->
+    <div class="feedback-card action full">
+      <h3>🎯 Action Plan</h3>
+
+      <div class="action-step">
+        <span>1</span>
+        <p>Practice STAR-method answers daily to improve structure</p>
+      </div>
+
+      <div class="action-step">
+        <span>2</span>
+        <p>Explain concepts using real project examples</p>
+      </div>
+
+      <div class="action-step">
+        <span>3</span>
+        <p>Speak answers aloud to build confidence and fluency</p>
+      </div>
+
+      <div class="action-step">
+        <span>4</span>
+        <p>Attempt mock interviews consistently to track progress</p>
+      </div>
+    </div>
+
+    <!-- ACTION -->
+    <div class="actions">
+      <a href="{{ url_for('dashboard') }}" class="btn">← Back to Dashboard</a>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- GRAPH SCRIPT -->
+<script>
+const ctx = document.getElementById('growthChart');
+
+const growthChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: ['1','2','3','4','5','6','7'],
+    datasets: [
+      {
+        label: 'Confidence',
+        data: [4,5,5.5,6,6.5,7,6.5],
+        borderColor: '#22c55e',
+        backgroundColor: 'rgba(34,197,94,0.25)',
+        tension: 0.4,
+        fill: true,
+        pointRadius: 4
+      },
+      {
+        label: 'Clarity',
+        data: [4.5,5,6,6.5,7,7.5,7.2],
+        borderColor: '#38bdf8',
+        backgroundColor: 'rgba(56,189,248,0.25)',
+        tension: 0.4,
+        fill: true,
+        pointRadius: 4
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: { duration: 1600, easing: 'easeOutQuart' },
+    plugins: { legend: { labels: { color: '#cbd5f5' } } },
+    scales: {
+      x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.06)' } },
+      y: { min: 0, max: 10, ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.06)' } }
+    }
+  }
+});
+</script>
+<script>
+async function loadPerformanceData() {
+  const res = await fetch("/performance-data");
+  const data = await res.json();
+
+  // ----- UPDATE KPI (optional but safe) -----
+  document.querySelectorAll(".kpi-card")[0].querySelector("h2").innerText =
+    data.stats.total_interviews;
+
+  document.querySelectorAll(".kpi-card")[1].querySelector("h2").innerText =
+    data.stats.avg_confidence + "/10";
+
+  document.querySelectorAll(".kpi-card")[2].querySelector("h2").innerText =
+    data.stats.avg_clarity + "/10";
+
+  document.querySelectorAll(".kpi-card")[3].querySelector("h2").innerText =
+    data.stats.overall_score + "%";
+
+  // ----- UPDATE GRAPH -----
+  growthChart.data.labels = data.trend.labels;
+  growthChart.data.datasets[0].data = data.trend.confidence;
+  growthChart.data.datasets[1].data = data.trend.clarity;
+  growthChart.update();
+
+  // ----- UPDATE FEEDBACK -----
+  updateList(".feedback-card.success ul", data.feedback.strengths);
+  updateList(".feedback-card.warning ul", data.feedback.improvements);
+}
+
+function updateList(selector, items) {
+  const ul = document.querySelector(selector);
+  ul.innerHTML = "";
+  items.forEach(i => {
+    const li = document.createElement("li");
+    li.innerText = i;
+    ul.appendChild(li);
+  });
+}
+
+window.addEventListener("load", loadPerformanceData);
+</script>
+
+
+</body>
+</html>

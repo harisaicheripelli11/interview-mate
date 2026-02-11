@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Interview Mate – AI Mock Interviews</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<div class="navbar" data-aos="fade-down">
+  <div class="logo">
+    <div class="logo-box">IM</div>
+    <strong>Interview Mate</strong>
+  </div>
+
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#how">How it Works</a>
+    <a href="#testimonials">Testimonials</a>
+  </div>
+
+  <a href="/login" class="nav-btn outline">LOGIN</a>
+  <a href="/signup" class="nav-btn">SIGN UP</a>
+</div>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="hero-content" data-aos="fade-right">
+
+    <span class="hero-badge">AI-Powered Interview Preparation</span>
+
+    <h1>
+      Ace Your Next Interview <br>
+      with <span class="gradient-text">Confidence</span>
+    </h1>
+
+    <p>
+      Practice real interview questions with AI, receive instant feedback,
+      and track your improvement — all in one platform.
+    </p>
+
+    <ul class="hero-list">
+      <li>✔ AI-powered mock interviews</li>
+      <li>✔ Voice & chat interview modes</li>
+      <li>✔ Instant feedback & performance tracking</li>
+    </ul>
+
+    <div class="hero-actions">
+      <a href="/signup" class="btn-primary">Get Started Free</a>
+      <a href="#how" class="btn-secondary">See How It Works</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= KEY BENEFITS ================= -->
+<section class="benefits" id="features">
+  <h2>Why Interview Mate is Useful for Interview Preparation</h2>
+
+  <div class="benefit-grid">
+    <div class="benefit-card" data-aos="zoom-in">
+      🎯 <h3>Real Interview Experience</h3>
+      <p>Role-based questions that simulate real interview scenarios.</p>
+    </div>
+
+    <div class="benefit-card" data-aos="zoom-in">
+      📊 <h3>Smart AI Feedback</h3>
+      <p>Confidence & clarity scores with detailed improvement tips.</p>
+    </div>
+
+    <div class="benefit-card" data-aos="zoom-in">
+      🎤 <h3>Voice Interview Mode</h3>
+      <p>Practice speaking answers just like a real interview.</p>
+    </div>
+
+    <div class="benefit-card" data-aos="zoom-in">
+      📈 <h3>Track Your Growth</h3>
+      <p>Monitor mock interviews attended and overall performance.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= HOW IT WORKS ================= -->
+<section class="how-it-works" id="how">
+  <h2>How It Works</h2>
+
+  <div class="steps">
+    <div class="step" data-aos="fade-up">
+      <span>1</span>
+      <h3>Choose Interview Type</h3>
+      <p>Select role, skill, or general mock interview.</p>
+    </div>
+
+    <div class="step" data-aos="fade-up">
+      <span>2</span>
+      <h3>Answer Questions</h3>
+      <p>Respond via chat or voice interview mode.</p>
+    </div>
+
+    <div class="step" data-aos="fade-up">
+      <span>3</span>
+      <h3>Get AI Feedback</h3>
+      <p>Receive instant scores, strengths & improvements.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= TESTIMONIALS ================= -->
+<section class="testimonials" id="testimonials">
+  <h2>What Users Say</h2>
+
+  <div class="testimonial-grid">
+    <div class="testimonial-card" data-aos="flip-left">
+       “This platform helped me understand how real interviews work and identify my weak areas.”
+      <span>— Computer Science Student</span>
+    </div>
+
+    <div class="testimonial-card" data-aos="flip-left">
+      “The AI feedback gave me clarity on confidence and communication, which I usually ignore while practicing.”
+      <span>— Final Year Engineering Student</span>
+    </div>
+
+    <div class="testimonial-card" data-aos="flip-left">
+       “Practicing with both chat and voice modes improved my answering flow.”
+      <span>— Job Interview Aspirant</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= CTA ================= -->
+<section class="cta" data-aos="fade-up">
+  <h2>Ready to Crack Your Interviews?</h2>
+  <a href="/signup" class="btn-primary">Start Free Mock Interview</a>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  <h3>Interview Mate</h3>
+  <p>AI-powered mock interview platform for students and job seekers.</p>
+
+  <div class="footer-links">
+    <a href="/">Home</a>
+    <a href="/login">Login</a>
+    <a href="/signup">Sign Up</a>
+  </div>
+
+  <p class="tech">Built with Flask • MySQL • AI • JavaScript</p>
+  <p class="copy">© 2026 Interview Mate. All rights reserved.</p>
+</footer>
+
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 900,
+      once:  false 
+    });
+  </script>
+
+</body>
+
+</html>

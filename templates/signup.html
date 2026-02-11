@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up – Interview Mate</title>
+
+  <!-- ONLY auth.css -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='auth.css') }}">
+</head>
+<body class="auth-layout">
+
+  <!-- LEFT INFO PANEL -->
+  <div class="auth-info">
+    <h1>Join Interview Mate</h1>
+    <p>
+      Practice interviews smarter with AI-powered feedback
+      designed for students and job seekers.
+    </p>
+
+    <ul class="auth-benefits">
+      <li>✔ AI-powered mock interviews</li>
+      <li>✔ Confidence & clarity scoring</li>
+      <li>✔ Voice and chat interview modes</li>
+      <li>✔ Performance tracking dashboard</li>
+    </ul>
+
+    <p class="auth-note">
+      Built as an academic & career-focused platform.
+    </p>
+  </div>
+
+  <!-- SIGNUP CARD -->
+  <div class="auth-card">
+    <h2>Create Account</h2>
+    <p class="subtitle">Start your interview preparation journey</p>
+
+    {% if error %}
+      <span class="error">{{ error }}</span>
+    {% endif %}
+
+    <form method="POST">
+      <input type="text" name="name" placeholder="Full Name" required>
+      <input type="email" name="email" placeholder="Email Address" required>
+      <input type="password" name="password" placeholder="Password" required>
+
+      <button type="submit">Create Account</button>
+    </form>
+
+    <div class="auth-footer">
+      Already have an account?
+      <a href="/login">Log in</a>
+    </div>
+  </div>
+
+   
+</body>
+
+</html>
+

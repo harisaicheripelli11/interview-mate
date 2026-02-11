@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Mock Interview | Interview Mate</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='interview.css') }}">
+</head>
+
+<body>
+
+<div class="interview-wrapper">
+  <div class="interview-card">
+
+    <!-- HEADER -->
+    <header class="interview-header">
+      <div class="ai-avatar">🤖</div>
+      <div>
+        <h1>AI Mock Interview</h1>
+        <p>{{ interview_type }} — {{ interview_value.replace("_", " ").title() }}</p>
+      </div>
+    </header>
+
+    <!-- CHAT -->
+    <div id="chat-box" class="chat-area"></div>
+
+    <!-- INPUT -->
+    <div class="chat-input">
+      <input
+        type="text"
+        id="userInput"
+        placeholder="Type your answer…"
+        autocomplete="off"
+      />
+      <button id="micBtn" class="icon-btn">🎤</button>
+      <button id="sendBtn" class="send-btn">Send</button>
+    </div>
+
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='chat.js') }}"></script>
+</body>
+</html>

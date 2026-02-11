@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Interview Performance Report | Interview Mate</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='final_report.css') }}">
+</head>
+
+<body>
+
+<div class="report-wrapper">
+
+  <div class="report-card">
+
+    <!-- HEADER -->
+    <header class="report-header fade-down">
+      <div class="report-icon">📊</div>
+      <div>
+        <h1>Interview Performance Report</h1>
+        <p>AI-driven evaluation based on your responses</p>
+      </div>
+    </header>
+
+    <!-- ================= SCORE SUMMARY ================= -->
+    <section class="score-grid">
+
+      <div class="score-card fade-up">
+        <span>Confidence</span>
+        <h2>{{ avg_confidence }}/10</h2>
+      </div>
+
+      <div class="score-card fade-up delay-1">
+        <span>Clarity</span>
+        <h2>{{ avg_clarity }}/10</h2>
+      </div>
+
+      <div class="score-card fade-up delay-2">
+        <span>Overall Score</span>
+        <h2>{{ overall_score }}/10</h2>
+      </div>
+
+    </section>
+
+    <!-- ================= VERDICT ================= -->
+    <div class="verdict fade-up delay-3">
+      {% if overall_score >= 8 %}
+        <span class="good">✅ Strong Performance</span>
+      {% elif overall_score >= 6 %}
+        <span class="average">⚠️ Average Performance</span>
+      {% else %}
+        <span class="poor">❌ Needs Improvement</span>
+      {% endif %}
+    </div>
+
+    <!-- ================= FEEDBACK BLOCKS ================= -->
+    <section class="feedback-grid">
+
+      <!-- STRENGTHS -->
+      <div class="feedback-card positive fade-up">
+        <h3>💪 Key Strengths</h3>
+        <ul>
+          {% for s in strengths %}
+            <li>{{ s }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <!-- IMPROVEMENTS -->
+      <div class="feedback-card warning fade-up delay-1">
+        <h3>⚠ Areas to Improve</h3>
+
+        {% if improvements and improvements|length > 0 %}
+          <ul>
+            {% for i in improvements %}
+              <li>{{ i }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="empty-text">
+            🎉 No major weaknesses identified. Focus on maintaining consistency and exploring advanced questions.
+          </p>
+        {% endif %}
+      </div>
+
+      <!-- INTERVIEW READINESS -->
+      <div class="feedback-card info fade-up delay-2">
+        <h3>🎯 Interview Readiness</h3>
+
+        {% if overall_score >= 8.5 %}
+          <p class="ready strong">
+            🟢 Ready for real interviews.<br>
+            You demonstrate strong confidence, clarity, and structured thinking.
+          </p>
+        {% elif overall_score >= 7 %}
+          <p class="ready medium">
+            🟡 Almost ready.<br>
+            A bit more practice will significantly boost your performance.
+          </p>
+        {% else %}
+          <p class="ready low">
+            🔴 Needs more preparation.<br>
+            Continue mock interviews to strengthen fundamentals.
+          </p>
+        {% endif %}
+      </div>
+
+    </section>
+
+    <!-- ================= ACTION BUTTONS ================= -->
+    <div class="report-actions fade-up delay-3">
+      <a href="{{ url_for('dashboard') }}" class="btn secondary">⬅ Dashboard</a>
+      <a href="{{ url_for('mock_interview') }}" class="btn primary">🔁 Retake Interview</a>
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>

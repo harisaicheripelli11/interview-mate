@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard | Interview Mate</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <div class="logo">
+    <div class="logo-box">IM</div>
+    <strong>Interview Mate</strong>
+  </div>
+  <a href="/logout" class="logout-btn">Logout</a>
+</header>
+
+<div class="dashboard">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+  <a class="nav-item " href="{{ url_for('profile') }}"><span>👤</span> Profile</a>
+  <a class="nav-item active"><span>🏠</span> Dashboard</a> 
+  <a class="nav-item" href="/mock-interview"><span>🎤</span> Mock Interviews</a> 
+  <a class="nav-item" href="/performance"><span>📊</span> Performance</a>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- HERO -->
+    <section class="hero fade-down">
+      <h1>Welcome, {{ session['user_name'] }} 👋</h1>
+      <p>
+        Interview Mate helps you practice interviews with AI, improve confidence, and prepare for real job interviews.
+      </p>
+    </section>
+
+    <!-- WHAT THIS PLATFORM DOES -->
+    <section class="info-grid fade-up">
+      <div class="info-card">
+        🎯
+        <h3>Practice Smart</h3>
+        <p>AI asks role-based interview questions just like real interviews.</p>
+      </div>
+
+      <div class="info-card">
+        🧠
+        <h3>Get Feedback</h3>
+        <p>Receive confidence & clarity scores with improvement suggestions.</p>
+      </div>
+
+      <div class="info-card">
+        🎤
+        <h3>Speak Confidently</h3>
+        <p>Use voice interview mode to improve spoken communication.</p>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="timeline fade-up delay-1">
+      <h2>How Interview Mate Works</h2>
+
+      <div class="timeline-steps">
+        <div class="step">
+          <span>1</span>
+          <p>Select interview type & role</p>
+        </div>
+
+        <div class="step">
+          <span>2</span>
+          <p>Answer questions via chat or voice</p>
+        </div>
+
+        <div class="step">
+          <span>3</span>
+          <p>Receive AI feedback & scores</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PREVIEW / IMAGE PLACE -->
+    <section class="preview fade-up delay-2">
+     <h2>📸 Platform Preview</h2>
+        <div class="slider">
+        <div class="slides" id="slides">
+          <img src="{{ url_for('static', filename='screenshots/pic1.png') }}">
+          <img src="{{ url_for('static', filename='screenshots/pic2.png') }}">
+          <img src="{{ url_for('static', filename='screenshots/pic3.png') }}">
+          <img src="{{ url_for('static', filename='screenshots/pic4.png') }}">
+          <img src="{{ url_for('static', filename='screenshots/pic5.png') }}">
+          <img src="{{ url_for('static', filename='screenshots/pic6.png') }}">
+          <img src="{{ url_for('static', filename='screenshots/pic7.png') }}">
+        </div>
+        </div>
+       <small>Live interview flow, AI feedback, reports & dashboard preview</small>
+    </section>
+
+
+    <!-- BENEFITS -->
+    <section class="benefits fade-up delay-3">
+      <h2>Why use Interview Mate?</h2>
+
+      <ul>
+        <li>✔ Safe environment to practice interviews</li>
+        <li>✔ Improves confidence before real interviews</li>
+        <li>✔ Helps identify strengths & weak areas</li>
+        <li>✔ Designed for students & job seekers</li>
+      </ul>
+    </section>
+
+    <!-- CTA -->
+    <a href="/mock-interview" class="start-btn pulse fade-up delay-4">
+      🎤 Start Your First Mock Interview
+    </a>
+
+  </main>
+</div>
+
+<script>
+const slides = document.getElementById("slides");
+const images = slides.children;
+let index = 0;
+
+setInterval(() => {
+  index = (index + 1) % images.length;
+  slides.style.transform = `translateX(-${index * 100}%)`;
+}, 4000); // 🔥 4 seconds per image (slow & smooth)
+</script>
+
+
+</body>
+</html>

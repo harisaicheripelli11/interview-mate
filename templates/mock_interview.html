@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Start Mock Interview | Interview Mate</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='mock.css') }}">
+</head>
+<body>
+
+<!-- ================= TOP BAR ================= -->
+<header class="topbar">
+  <div class="logo">
+    <div class="logo-box">IM</div>
+    <span>Interview Mate</span>
+  </div>
+  <a href="/dashboard" class="back-btn">← Back</a>
+</header>
+
+<!-- ================= MAIN ================= -->
+<main class="container">
+
+  <!-- HEADER -->
+  <section class="page-header fade-down">
+    <h1>🎤 Start Mock Interview</h1>
+    <p>Select a role or company to simulate a real interview experience.</p>
+
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Search role, company, or interview type..."
+      onkeyup="filterCards()"
+    >
+  </section>
+
+  <!-- ================= JOB ROLES ================= -->
+  <section class="section fade-up">
+    <h2 class="section-title">By Job Role</h2>
+
+    <div class="grid">
+      <div class="card" data-name="software engineer" onclick="selectRole('role','software_engineer')">
+        <div class="icon">🔥</div>
+        <h3>Software Engineer</h3>
+        <p>DSA • OOPs • System Design</p>
+      </div>
+
+      <div class="card" data-name="data analyst" onclick="selectRole('role','data_analyst')">
+        <div class="icon">📊</div>
+        <h3>Data Analyst</h3>
+        <p>SQL • Python • Analytics</p>
+      </div>
+
+      <div class="card" data-name="business analyst" onclick="selectRole('role','business_analyst')">
+        <div class="icon">📈</div>
+        <h3>Business Analyst</h3>
+        <p>Case Studies • SQL</p>
+      </div>
+
+      <div class="card" data-name="devops engineer" onclick="selectRole('role','devops_engineer')">
+        <div class="icon">⚙️</div>
+        <h3>DevOps Engineer</h3>
+        <p>AWS • Docker • CI/CD</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= COMPANY ================= -->
+  <section class="section fade-up delay-1">
+    <h2 class="section-title">By Company</h2>
+
+    <div class="grid">
+      <div class="card" data-name="google" onclick="selectRole('company','google')">
+        <div class="logo-badge">G</div>
+        <h3>Google</h3>
+        <p>Product + DSA Focus</p>
+      </div>
+
+      <div class="card" data-name="amazon" onclick="selectRole('company','amazon')">
+        <div class="logo-badge">A</div>
+        <h3>Amazon</h3>
+        <p>Leadership Principles</p>
+      </div>
+
+      <div class="card" data-name="netflix" onclick="selectRole('company','netflix')">
+        <div class="logo-badge">N</div>
+        <h3>Netflix</h3>
+        <p>Culture + System Design</p>
+      </div>
+
+      <div class="card" data-name="jp morgan" onclick="selectRole('company','jpmorgan')">
+        <div class="logo-badge">JP</div>
+        <h3>JP Morgan</h3>
+        <p>Finance + Tech</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= OTHER ================= -->
+  <section class="section fade-up delay-2">
+    <h2 class="section-title">Other Interviews</h2>
+
+    <div class="grid">
+      <div class="card" data-name="hr interview" onclick="selectRole('other','hr')">
+        <div class="icon">🧠</div>
+        <h3>HR Interview</h3>
+        <p>Behavioral • Situational</p>
+      </div>
+
+      <div class="card" data-name="system design" onclick="selectRole('other','system_design')">
+        <div class="icon">🏗️</div>
+        <h3>System Design</h3>
+        <p>Scalable Architecture</p>
+      </div>
+
+      <div class="card" data-name="salary negotiation" onclick="selectRole('other','salary')">
+        <div class="icon">💰</div>
+        <h3>Salary Negotiation</h3>
+        <p>CTC • Offer Discussion</p>
+      </div>
+
+      <div class="card" data-name="general mock" onclick="selectRole('other','mock_general')">
+        <div class="icon">🎯</div>
+        <h3>General Mock</h3>
+        <p>Mixed Technical & HR</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================= INTERVIEW MODE MODAL ================= -->
+<div id="modeOverlay" class="overlay hidden">
+  <div class="overlay-box">
+
+    <button class="close-btn" onclick="closeMode()">✕</button>
+
+    <h2>Select Interview Mode</h2>
+    <p class="overlay-sub">Choose how you want to practice</p>
+
+    <!-- CHAT MODE -->
+    <div class="mode-card active" onclick="selectMode('chat')">
+      <input type="radio" name="mode" value="chat" checked>
+      <span class="mode-icon">💬</span>
+      <div class="mode-text">
+        <strong>Chat Interview</strong>
+        <small>Type answers & get instant feedback</small>
+      </div>
+    </div>
+
+    <!-- VOICE MODE -->
+    <div class="mode-card" onclick="selectMode('voice')">
+      <input type="radio" name="mode" value="voice">
+      <span class="mode-icon">🎙</span>
+      <div class="mode-text">
+        <strong>Voice Interview</strong>
+        <small>Speak naturally like a real interview</small>
+      </div>
+    </div>
+
+    <button class="start-btn" onclick="startInterview()">🚀 Start Interview</button>
+  </div>
+</div>
+
+<script>
+  /* ================= GLOBAL STATE ================= */
+  let selectedType = "";
+  let selectedValue = "";
+  let selectedMode = "chat";
+
+  /* ================= ROLE / COMPANY CLICK ================= */
+  function selectRole(type, value) {
+    selectedType = type;
+    selectedValue = value;
+
+    const overlay = document.getElementById("modeOverlay");
+    overlay.classList.remove("hidden");
+  }
+
+  /* ================= CLOSE MODAL ================= */
+  function closeMode() {
+    const overlay = document.getElementById("modeOverlay");
+    overlay.classList.add("hidden");
+  }
+
+  /* ================= MODE SELECTION ================= */
+  function selectMode(mode) {
+    selectedMode = mode;
+
+    document.querySelectorAll(".mode-card").forEach(card => {
+      card.classList.remove("active");
+      card.querySelector("input").checked = false;
+    });
+
+    const activeCard = document.querySelector(
+      `.mode-card input[value="${mode}"]`
+    ).parentElement;
+
+    activeCard.classList.add("active");
+    activeCard.querySelector("input").checked = true;
+  }
+
+  /* ================= START INTERVIEW ================= */
+  function startInterview() {
+    if (!selectedType || !selectedValue) {
+      alert("Please select a role or company first.");
+      return;
+    }
+
+    window.location.href =
+      `/interview?type=${selectedType}&value=${selectedValue}&mode=${selectedMode}`;
+  }
+
+  /* ================= SEARCH FILTER ================= */
+  function filterCards() {
+    const query = document
+      .getElementById("searchInput")
+      .value
+      .toLowerCase()
+      .trim();
+
+    const cards = document.querySelectorAll(".card");
+
+    cards.forEach(card => {
+      const name = card.dataset.name.toLowerCase();
+      card.style.display = name.includes(query) ? "flex" : "none";
+    });
+  }
+
+  /* ================= ESC KEY CLOSE MODAL ================= */
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      closeMode();
+    }
+  });
+
+  /* ================= CLICK OUTSIDE TO CLOSE ================= */
+  document.getElementById("modeOverlay").addEventListener("click", function (e) {
+    if (e.target.id === "modeOverlay") {
+      closeMode();
+    }
+  });
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Profile | Interview Mate</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+</head>
+
+<body>
+
+<div class="profile-wrapper fade-in">
+
+  <div class="profile-card">
+
+    <!-- HEADER -->
+    <div class="profile-header">
+      <div class="avatar">👤</div>
+      <div>
+        <h2>{{ user.name | default("User") }}</h2>
+        <p class="role">Interview Mate User</p>
+      </div>
+    </div>
+
+    <!-- BASIC INFO -->
+    <div class="info-grid">
+      <div class="info-item">
+        <span>Email</span>
+        <p>{{ user.email }}</p>
+      </div>
+      <div class="info-item">
+        <span>Joined On</span>
+        <p>
+          {{ user.created_at.strftime('%d %b %Y') if user.created_at else "—" }}
+        </p>
+      </div>
+    </div>
+
+    <!-- RECENT HISTORY -->
+    <div class="section slide-up">
+      <h3>🕘 Recent Interviews</h3>
+
+      {% if history and history|length > 0 %}
+        <ul class="history-list">
+          {% for h in history %}
+            <li>
+              <strong>{{ h.interview_type.replace('_',' ').title() }}</strong>
+              <span>{{ h.interview_value.replace('_',' ').title() }}</span>
+              <small>
+                {{ h.created_at.strftime('%d %b %Y') if h.created_at else "" }}
+              </small>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="empty">No interviews attempted yet</p>
+      {% endif %}
+    </div>
+
+    <!-- PROGRESS SNAPSHOT -->
+    <div class="section slide-up delay">
+      <h3>📈 Progress Snapshot</h3>
+
+      <div class="snapshot-grid">
+
+        <!-- CONFIDENCE -->
+        <div class="snapshot-card">
+          <span>Confidence</span>
+          <p>
+            {% set conf = stats.avg_conf | default(0) %}
+            {% if conf >= 7 %}
+              Improving ↑
+            {% elif conf >= 5 %}
+              Stable →
+            {% else %}
+              Needs Work ↓
+            {% endif %}
+          </p>
+        </div>
+
+        <!-- CLARITY -->
+        <div class="snapshot-card">
+          <span>Clarity</span>
+          <p>
+            {% set clarity = stats.avg_clarity | default(0) %}
+            {% if clarity >= 7 %}
+              Strong ↑
+            {% elif clarity >= 5 %}
+              Stable →
+            {% else %}
+              Needs Work ↓
+            {% endif %}
+          </p>
+        </div>
+
+        <!-- CONSISTENCY -->
+        <div class="snapshot-card">
+          <span>Consistency</span>
+          <p>
+            {% set total = stats.total | default(0) %}
+            {% if total >= 10 %}
+              Excellent 🔥
+            {% elif total >= 5 %}
+              Good 👍
+            {% else %}
+              Starting 🚀
+            {% endif %}
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ACTION -->
+    <a href="{{ url_for('dashboard') }}" class="btn-back">
+      ← Back to Dashboard
+    </a>
+
+  </div>
+
+</div>
+
+</body>
+</html>
