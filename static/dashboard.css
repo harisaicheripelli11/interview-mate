@@ -246,24 +246,3 @@ body {
 }
 
 
-/* ================= AUTO SLIDE ================= */
-
-@keyframes slide {
-  0% { transform: translateX(0); }
-  14% { transform: translateX(0); }
-
-  18% { transform: translateX(-100%); }
-  32% { transform: translateX(-100%); }
-
-  36% { transform: translateX(-200%); }
-  50% { transform: translateX(-200%); }
-
-  54% { transform: translateX(-300%); }
-  68% { transform: translateX(-300%); }
-
-  72% { transform: translateX(-400%); }
-  86% { transform: translateX(-400%); }
-
-  90% { transform: translateX(-500%); }
-  100% { transform: translateX(-600%); }
-}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard | Interview Mate</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+
+<body>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <h2>👑 Admin Dashboard</h2>
+  <a href="/logout" class="logout">Logout</a>
+</header>
+
+<main class="admin-container">
+
+  <!-- STATS -->
+  <section class="stats">
+    <div class="card">
+      <h3>Total Users</h3>
+      <p>{{ total_users }}</p>
+    </div>
+  </section>
+
+  <!-- USER TABLE -->
+  <section class="table-section">
+    <h3>👥 User Activity</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Interviews Taken</th>
+          <th>Interview Types</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for u in users %}
+        <tr>
+          <td>{{ u.name }}</td>
+          <td>{{ u.email }}</td>
+          <td>
+            <strong>{{ u.interviews_taken }}</strong>
+          </td>
+          <td>
+            {% if u.interview_types %}
+              <span class="tag">{{ u.interview_types }}</span>
+            {% else %}
+              <span class="muted">No interviews</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+</body>
+</html>

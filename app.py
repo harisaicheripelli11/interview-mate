@@ -88,15 +88,24 @@ def login():
             cur.execute("SELECT * FROM users WHERE email=%s", (email,))
             user = cur.fetchone()
 
+        # ✅ VALID LOGIN
         if user and bcrypt.checkpw(password.encode(), user["password"].encode()):
             session["user"] = user["email"]
-            session["user_name"] = user["name"]   # ✅ ADD THIS
-            return redirect(url_for("dashboard"))
+            session["user_name"] = user["name"]
+            session["role"] = user["role"]   # 🔐 role stored
 
+            # 🔀 ROLE-BASED REDIRECT
+            if user["role"] == "admin":
+                return redirect(url_for("admin_dashboard"))
+            else:
+                return redirect(url_for("dashboard"))
 
+        # ❌ INVALID LOGIN
         return render_template("login.html", error="Invalid email or password")
 
+    # GET REQUEST
     return render_template("login.html")
+
 
 
 # ---------------- LOGOUT ----------------
@@ -112,6 +121,38 @@ def dashboard():
         return redirect(url_for("login"))
     return render_template("dashboard.html")
 
+#--------------------Admin-------------------
+
+@app.route("/admin")
+def admin_dashboard():
+    if "user" not in session or session.get("role") != "admin":
+        return redirect(url_for("login"))
+
+    with db.cursor() as cur:
+        # Total users
+        cur.execute("SELECT COUNT(*) AS total FROM users")
+        total_users = cur.fetchone()["total"]
+
+        # User + interview data
+        cur.execute("""
+            SELECT 
+                u.name,
+                u.email,
+                COUNT(DISTINCT i.interview_id) AS interviews_taken,
+                GROUP_CONCAT(DISTINCT i.interview_value SEPARATOR ', ') AS interview_types
+            FROM users u
+            LEFT JOIN interview_scores i 
+                ON u.email = i.user_email
+            GROUP BY u.id
+            ORDER BY interviews_taken DESC
+        """)
+        users = cur.fetchall()
+
+    return render_template(
+        "admin.html",
+        total_users=total_users,
+        users=users
+    )
 
 # ---------------- PROFILE ----------------
 @app.route("/profile")
