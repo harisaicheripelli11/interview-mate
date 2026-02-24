@@ -749,5 +749,5 @@ def performance():
 # ---------------- RUN ----------------
 if __name__ == "__main__":
     print("🔥 Interview Mate running on port 3000")
-    app.run(debug=True, use_reloader=False, port=3000)
+    app.run()
 
