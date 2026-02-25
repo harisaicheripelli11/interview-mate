@@ -59,22 +59,42 @@ def signup():
         email = request.form["email"]
         password = request.form["password"]
 
+        # Hash password
         hashed_pw = bcrypt.hashpw(
-            password.encode(), bcrypt.gensalt()
+            password.encode("utf-8"),
+            bcrypt.gensalt()
         ).decode("utf-8")
 
         try:
             with db.cursor() as cur:
                 cur.execute(
-                    "INSERT INTO users (name, email, password) VALUES (%s,%s,%s)",
+                    """
+                    INSERT INTO users (name, email, password)
+                    VALUES (%s, %s, %s)
+                    """,
                     (name, email, hashed_pw)
                 )
             db.commit()
             return redirect(url_for("login"))
 
         except psycopg2.errors.UniqueViolation:
-            return render_template("signup.html", error="Email already exists")
+            # 🔴 REQUIRED for PostgreSQL
+            db.rollback()
+            return render_template(
+                "signup.html",
+                error="Email already exists"
+            )
 
+        except Exception as e:
+            # 🔴 REQUIRED for PostgreSQL
+            db.rollback()
+            print("SIGNUP ERROR:", e)
+            return render_template(
+                "signup.html",
+                error="Something went wrong. Please try again."
+            )
+
+    # GET request
     return render_template("signup.html")
 
 
@@ -140,7 +160,7 @@ def admin_dashboard():
                 u.name,
                 u.email,
                 COUNT(DISTINCT i.interview_id) AS interviews_taken,
-                GROUP_CONCAT(DISTINCT i.interview_value SEPARATOR ', ') AS interview_types
+                STRING_AGG(DISTINCT i.interview_value, ', ') AS interview_types
             FROM users u
             LEFT JOIN interview_scores i 
                 ON u.email = i.user_email
