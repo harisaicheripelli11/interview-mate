@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
-import pymysql
-from pymysql.err import IntegrityError
+import psycopg2
+import psycopg2.extras
 import bcrypt
 from groq import Groq
 import os
@@ -16,12 +16,13 @@ app.secret_key = os.getenv("FLASK_SECRET_KEY", "interview-mate-secret")
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 # ---------------- DATABASE ----------------
-db = pymysql.connect(
-    host="localhost",
-    user="root",
-    password="root123",
-    database="interview_mate",
-    cursorclass=pymysql.cursors.DictCursor
+db = psycopg2.connect(
+    host=os.environ.get("DB_HOST"),
+    database=os.environ.get("DB_NAME"),
+    user=os.environ.get("DB_USER"),
+    password=os.environ.get("DB_PASSWORD"),
+    port=os.environ.get("DB_PORT"),
+    cursor_factory=psycopg2.extras.RealDictCursor
 )
 
 # ---------------- HELPERS ----------------
@@ -71,7 +72,7 @@ def signup():
             db.commit()
             return redirect(url_for("login"))
 
-        except IntegrityError:
+        except psycopg2.errors.UniqueViolation:
             return render_template("signup.html", error="Email already exists")
 
     return render_template("signup.html")
