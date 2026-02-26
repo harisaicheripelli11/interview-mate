@@ -561,34 +561,41 @@ confidence and clarity must be between 1 and 10.
 
     # ---------------- SAVE SCORE (REAL ANSWERS ONLY) ----------------
     if len(user_message.split()) >= 3:
-        with db.cursor() as cur:
-            cur.execute("""
-                INSERT INTO interview_scores
-                (
-                    interview_id,
-                    user_email,
-                    interview_type,
-                    interview_value,
-                    round_number,
+        try:
+            with db.cursor() as cur:
+                cur.execute("""
+                    INSERT INTO interview_scores
+                    (
+                        interview_id,
+                        user_email,
+                        interview_type,
+                        interview_value,
+                        round_number,
+                        confidence,
+                        clarity,
+                        comment
+                    )
+                    VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+                """, (
+                    session["interview_id"],
+                    session["user"],
+                    session["interview_type"],
+                    session["interview_value"],
+                    session["current_round"],
                     confidence,
                     clarity,
-                    comment
-                )
-                VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
-            """, (
-                session["interview_id"],
-                session["user"],
-                session["interview_type"],
-                session["interview_value"],
-                session["current_round"],
-                confidence,
-                clarity,
-                review
-            ))
-        db.commit()
+                    review
+                ))
 
-        session["answered_questions"] += 1
-        session["question_count"] += 1
+            db.commit()
+
+            # ✅ SAFE session updates
+            session["answered_questions"] = session.get("answered_questions", 0) + 1
+            session["question_count"] = session.get("question_count", 0) + 1
+
+        except Exception as e:
+            db.rollback()
+            print("SAVE SCORE ERROR:", e)
 
     # ---------------- ROUND ADVANCE ----------------
     if session["question_count"] >= session["questions_per_round"]:
